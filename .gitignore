@@ -29,3 +29,8 @@ scripts/__pycache__/
 *.bak
 *.dwl
 *.dwl2
+
+#PlatformIO
+*.pio
+*.pioenvs
+*.piolibdeps
