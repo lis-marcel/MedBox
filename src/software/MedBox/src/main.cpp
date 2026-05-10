@@ -1,31 +1,36 @@
 #include <Arduino.h>
-
-// Definiujemy piny dla naszych diod testowych
-#define LED1_PIN 12
-#define LED2_PIN 13
+#include <Wire.h>
+#include "config.h"
 
 void setup() {
-  // Uruchamiamy port szeregowy, żeby widzieć komunikaty w terminalu PlatformIO
-  Serial.begin(115200);
-  Serial.println("\nStart testu diod na ESP8266!");
+    pinMode(PIN_LED_RED, OUTPUT);
+    pinMode(PIN_LED_BLUE, OUTPUT);
 
-  // Konfigurujemy piny jako wyjścia
-  pinMode(LED1_PIN, OUTPUT);
-  pinMode(LED2_PIN, OUTPUT);
+    digitalWrite(PIN_LED_RED, LOW);
+    digitalWrite(PIN_LED_BLUE, LOW);
 
-  // Ustawiamy stan początkowy (LED1 włączony, LED2 wyłączony)
-  digitalWrite(LED1_PIN, HIGH);
-  digitalWrite(LED2_PIN, LOW);
-}
+    Serial.begin(115200);
+    Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL); // Twoje niestandardowe piny
+
+    Wire.beginTransmission(ADDR_MCP_I2C);
+
+    if (Wire.endTransmission() == 0) {
+        digitalWrite(PIN_LED_BLUE, HIGH);
+    } 
+
+    delay(1000);
+    digitalWrite(PIN_LED_BLUE, LOW);
+
+    Wire.beginTransmission(ADDR_DS3231);
+    if (Wire.endTransmission() == 0) {
+        digitalWrite(PIN_LED_RED, HIGH);
+    } 
+
+  }
 
 void loop() {
-  // Przełączamy stany diod na przeciwne
-  digitalWrite(LED1_PIN, !digitalRead(LED1_PIN));
-  digitalWrite(LED2_PIN, !digitalRead(LED2_PIN));
-
-  // Wypisujemy kontrolnie kropkę w terminalu
-  Serial.print(".");
-
-  // Czekamy 500 milisekund (pół sekundy)
-  delay(500);
+    // Tutaj będzie logika: 
+    // 1. Sprawdź czy czas z RTC zgadza się z alarmem.
+    // 2. Jeśli tak -> zapal LED i włącz Buzzer.
+    // 3. Czekaj na przycisk przez ekspander -> wyłącz alarm.
 }
