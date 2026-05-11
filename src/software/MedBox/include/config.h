@@ -19,4 +19,6 @@
 #define ADDR_MCP_I2C 0x20
 #define ADDR_DS3231_I2C 0x68
 
+#define NUM_BOXES 8
+
 #endif
