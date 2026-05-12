@@ -19,18 +19,18 @@ void setup() {
         while(1); 
     }
 
-    digitalWrite(PIN_LED_BLUE, HIGH);
-}
-
-void loop() {
-    // Przechodzimy po kolei przez wszystkie diody (od 0 do 6 lub 7)
     for (int i = 0; i < NUM_BOXES; i++) {
         Serial.println(i);
 
-        periph.setLed(i, true);  // Zapal diodę i
-        delay(200);              // Czekaj 200ms
-        periph.setLed(i, false); // Zgaś diodę i
+        periph.setLed(i, true);
+        delay(200);
     }
+}
 
-    delay(500); // Przerwa przed kolejnym przebiegiem wszystkich skrytek
+void loop() {
+    for (uint8_t i = 0; i < NUM_BOXES; i++) {
+        if (periph.isButtonPressed(i)) {
+            periph.setLed(i, false);
+        }
+    }
 }
