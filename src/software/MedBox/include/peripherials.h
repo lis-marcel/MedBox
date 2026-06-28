@@ -10,9 +10,10 @@ public:
     bool begin();
     void setLed(uint8_t boxIndex, bool state);
     bool isButtonPressed(uint8_t boxIndex);
+    
+    Adafruit_MCP23X17 mcp;
 
 private:
-    Adafruit_MCP23X17 mcp;
 };
 
 extern Peripherials periph;
