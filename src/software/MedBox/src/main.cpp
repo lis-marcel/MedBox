@@ -3,7 +3,8 @@
 #include "config.h"
 #include "peripherials.h"
 #include "buzzer.h"
-#include "web_server.h" // 1. Dodajemy nagłówek serwera
+#include "web_server.h"
+#include "rtc_module.h"
 
 unsigned long previousMillis = 0;
 const unsigned long interval = 5000; 
@@ -31,12 +32,16 @@ void setup() {
         periph.setLed(i, false);
     }
     
-    webUI.begin(); // 2. Uruchamiamy Web Server!
+    myRtc.begin();
+
+    webUI.begin(); 
 }
 
 void loop() {
     // 3. Nasłuchujemy klientów na stronie www
     webUI.handleClient(); 
+
+    myRtc.saveHeartbeat();
     
     unsigned long currentMillis = millis();
 
